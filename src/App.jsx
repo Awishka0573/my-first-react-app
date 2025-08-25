@@ -1,7 +1,7 @@
-const card = () => {
+const Card = ({title}) => {
   return (
     <div>
-      <h2>I am Awishka to new world</h2>
+      <h2>{title}</h2>
     </div>
   )
 }
@@ -11,7 +11,12 @@ const App = () => {
     <div>
       <h2>Hello World React</h2>
 
-      {card()}
+      <Card title="I" />
+      <Card title="am" />
+      <Card title="Awishka" />
+      <Card title="Isuru"/>
+      <Card title="Kumara"/>
+      
       
     </div>
   )
