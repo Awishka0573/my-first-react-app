@@ -3,15 +3,19 @@ import React from 'react'
 const App = () => {
   return (
     <main>
+
+      <div className='pattern' />
+
       <div className='warpper'>
         <header>
+          <img src="../public/hero-img.png" alt="hero banner" />
           <h1>Find <span className="text-gradient"> Movies</span> you"ll Enjoy without the Hassel</h1>
         </header>
 
       <p>Search</p>
 
 
-      </div>
+      </div> 
   </main>
   )
 }
