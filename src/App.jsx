@@ -2,11 +2,17 @@ import React from 'react'
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline text-red-500 ">
-         Hello world!
-      </h1>
-  </div>
+    <main>
+      <div className='warpper'>
+        <header>
+          <h1>Find <span className="text-gradient"> Movies</span> you"ll Enjoy without the Hassel</h1>
+        </header>
+
+      <p>Search</p>
+
+
+      </div>
+  </main>
   )
 }
 
