@@ -2,8 +2,8 @@ import React from 'react'
 import Search from './components/Search.jsx'
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = React.useState("I am Batman");
-  
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   return (
     <main>
 
