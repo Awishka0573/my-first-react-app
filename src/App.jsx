@@ -1,18 +1,22 @@
 import React from 'react'
+import Search from './components/Search.jsx'
 
 const App = () => {
+  const [searchTerm, setSearchTerm] = React.useState("I am Batman");
+  
   return (
     <main>
 
-      <div className='pattern' />
+      <div className="pattern" />
 
-      <div className='warpper'>
+      <div className="wrapper">
         <header>
-          <img src="../public/hero-img.png" alt="hero banner" />
+          <img src="./hero-img.png" alt="hero banner" />
           <h1>Find <span className="text-gradient"> Movies</span> you"ll Enjoy without the Hassel</h1>
         </header>
+        
 
-      <p>Search</p>
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
 
       </div> 
