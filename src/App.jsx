@@ -4,6 +4,7 @@ import Search from "./components/Search.jsx";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
+// ✅ Use v4 Bearer Token
 const API_OPTIONS = {
   method: "GET",
   headers: {
@@ -26,12 +27,16 @@ const App = () => {
       let endpoint;
 
       if (query && query.trim() !== "") {
+        // 🔎 search endpoint
         endpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(
           query
         )}`;
       } else {
+        // 🎬 discover popular movies by default
         endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
       }
+
+      console.log("Fetching:", endpoint);
 
       const response = await fetch(endpoint, API_OPTIONS);
 
@@ -49,14 +54,17 @@ const App = () => {
     }
   };
 
+  // Fetch movies when searchTerm changes (debounced)
   useEffect(() => {
     if (searchTerm.trim() === "") return;
     const handler = setTimeout(() => {
       fetchMovies(searchTerm);
-    }, 500);
+    }, 500); // 500ms debounce
+
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
+  // fetch default movies on first render
   useEffect(() => {
     fetchMovies();
   }, []);
@@ -65,15 +73,14 @@ const App = () => {
     <main>
       <div className="pattern" />
       <div className="wrapper">
-        <header className="flex flex-col items-center text-center">
-          <img src="./hero.png" alt="Hero Banner" className="mb-4" />
-          <h1 className="text-3xl md:text-4xl font-bold text-white">
+        <header>
+          <img src="./hero.png" alt="Hero Banner" />
+          <h1>
             Find <span className="text-gradient">Movies</span> you'll Enjoy
             without the Hassel
           </h1>
 
-          {/* Modern Search bar */}
-          <div className="relative w-full max-w-md mt-6">
+          <div className="relative w-full max-w-md mt-6 justify-items-center mx-auto mb-8">
             <input
               type="text"
               value={searchTerm}
@@ -90,8 +97,8 @@ const App = () => {
           </div>
         </header>
 
-        <section className="all-movies mt-8">
-          <h2 className="text-2xl font-semibold text-white mb-4">All Movies</h2>
+        <section className="all-movies">
+          <h2>All Movies</h2>
 
           {isLoading ? (
             <p className="text-white">Loading movies...</p>
@@ -100,13 +107,10 @@ const App = () => {
           ) : moviesList.length === 0 ? (
             <p className="text-gray-400">No movies found.</p>
           ) : (
-            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <ul>
               {moviesList.map((movie) => (
-                <li
-                  key={movie.id}
-                  className="bg-gray-800 rounded-lg p-3 shadow hover:shadow-lg transition"
-                >
-                  <p className="text-white font-medium">{movie.title}</p>
+                <li key={movie.id} className="text-white">
+                  {movie.title}
                 </li>
               ))}
             </ul>
