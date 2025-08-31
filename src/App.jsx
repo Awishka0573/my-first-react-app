@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import Search from "./components/Search.jsx";
+import Spinner from "./components/Spinner";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
-// ✅ Use v4 Bearer Token
 const API_OPTIONS = {
   method: "GET",
   headers: {
@@ -17,7 +16,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [moviesList, setMoviesList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchMovies = async (query) => {
     setIsLoading(true);
@@ -27,12 +26,12 @@ const App = () => {
       let endpoint;
 
       if (query && query.trim() !== "") {
-        // 🔎 search endpoint
+        // 🔎 Search endpoint
         endpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(
           query
         )}`;
       } else {
-        // 🎬 discover popular movies by default
+        // 🎬 Discover popular movies by default
         endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
       }
 
@@ -64,7 +63,7 @@ const App = () => {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  // fetch default movies on first render
+  // Fetch default movies on first render
   useEffect(() => {
     fetchMovies();
   }, []);
@@ -77,31 +76,35 @@ const App = () => {
           <img src="./hero.png" alt="Hero Banner" />
           <h1>
             Find <span className="text-gradient">Movies</span> you'll Enjoy
-            without the Hassel
+            without the Hassle
           </h1>
 
-          <div className="relative w-full max-w-md mt-6 justify-items-center mx-auto mb-8">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search for movies..."
-              className="w-full pl-4 pr-20 py-3 rounded-full shadow-md bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            />
-            <button
-              onClick={() => fetchMovies(searchTerm)}
-              className="absolute right-1 top-1 bottom-1 px-5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium hover:from-blue-600 hover:to-purple-700 transition"
-            >
-              Search
-            </button>
+          {/* ✅ Centered Search Bar + Button */}
+          <div className="flex justify-center mt-6 mb-8">
+            <div className="relative w-full max-w-md">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search for movies..."
+                className="w-full pl-4 pr-24 py-3 rounded-full shadow-md bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+              <button
+                onClick={() => fetchMovies(searchTerm)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium hover:from-blue-600 hover:to-purple-700 transition"
+              >
+                Search
+              </button>
+            </div>
           </div>
         </header>
 
         <section className="all-movies">
-          <h2>All Movies</h2>
+          <h2 className="mt-[40px]">All Movies</h2>
 
           {isLoading ? (
-            <p className="text-white">Loading movies...</p>
+            <Spinner />
+            
           ) : errorMessage ? (
             <p className="text-red-500">{errorMessage}</p>
           ) : moviesList.length === 0 ? (
