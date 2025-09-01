@@ -19,7 +19,7 @@ const App = () => {
   const [moviesList, setMoviesList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMovies = async (query) => {
+  const fetchMovies = async (query = "") => {
     setIsLoading(true);
     setErrorMessage(null);
 
@@ -27,16 +27,10 @@ const App = () => {
       let endpoint;
 
       if (query && query.trim() !== "") {
-        // 🔎 Search endpoint
-        endpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(
-          query
-        )}`;
+        endpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`;
       } else {
-        // 🎬 Discover popular movies by default
         endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
       }
-
-      console.log("Fetching:", endpoint);
 
       const response = await fetch(endpoint, API_OPTIONS);
 
@@ -54,17 +48,18 @@ const App = () => {
     }
   };
 
-  // Fetch movies when searchTerm changes (debounced)
+  // 🔹 Debounced search
   useEffect(() => {
     if (searchTerm.trim() === "") return;
+
     const handler = setTimeout(() => {
       fetchMovies(searchTerm);
-    }, 500); // 500ms debounce
+    }, 600); // debounce 600ms
 
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  // Fetch default movies on first render
+  // 🔹 Fetch default movies on first load (popular)
   useEffect(() => {
     fetchMovies();
   }, []);
@@ -105,13 +100,12 @@ const App = () => {
 
           {isLoading ? (
             <Spinner />
-            
           ) : errorMessage ? (
             <p className="text-red-500">{errorMessage}</p>
           ) : moviesList.length === 0 ? (
             <p className="text-gray-400">No movies found.</p>
           ) : (
-            <ul>
+            <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-6">
               {moviesList.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
